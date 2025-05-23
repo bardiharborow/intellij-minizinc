@@ -1,4 +1,4 @@
-package com.github.bardiharborow.intellijminizinc
+package com.bardiharborow.minizinc
 
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.openapi.components.service

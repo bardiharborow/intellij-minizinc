@@ -1,4 +1,4 @@
-package com.github.bardiharborow.intellijminizinc.toolWindow
+package com.bardiharborow.minizinc.toolWindow
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger

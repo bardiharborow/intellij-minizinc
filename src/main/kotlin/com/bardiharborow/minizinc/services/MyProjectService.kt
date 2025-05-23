@@ -1,4 +1,4 @@
-package com.github.bardiharborow.intellijminizinc.services
+package com.bardiharborow.minizinc.services
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
