@@ -1,0 +1,365 @@
+{
+  parserClass="com.bardiharborow.minizinc.language.parser.MiniZincParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="MiniZinc"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.bardiharborow.minizinc.language.psi"
+  psiImplPackage="com.bardiharborow.minizinc.language.psi.impl"
+
+  elementTypeHolderClass="com.bardiharborow.minizinc.language.psi.MiniZincTypes"
+  elementTypeClass="com.bardiharborow.minizinc.language.psi.MiniZincElementType"
+  elementTypePrefix="BNF_"
+  tokenTypeClass="com.bardiharborow.minizinc.language.psi.MiniZincTokenType"
+
+  tokens = [
+    // Based on https://github.com/MiniZinc/libminizinc/blob/master/lib/lexer.lxx
+
+    // Tilde (~) here means "matches everything up to (and including) the first occurrence"
+    // See also: https://stackoverflow.com/questions/60226013/why-jflex-reject
+    FILE_DOCUMENTATION_COMMENT = 'regexp:/\*\*\*~(\*/)'
+    DOCUMENTATION_COMMENT = 'regexp:/\*\*~(\*/)'
+    BLOCK_COMMENT = 'regexp:/\*~(\*/)'
+
+    BRACKET_LEFT = "["
+    BRACKET_LEFT_2D = "[|"
+    BRACKET_RIGHT = "]"
+    BRACKET_RIGHT_2D = "|]"
+
+    LINE_COMMENT = 'regexp:%.*'
+
+    OPERATOR_DOTDOT = ".."
+    OPERATOR_DOTDOT_QUOTED = "'..'"
+    OPERATOR_DOTDOT_LE = "..<"
+    OPERATOR_DOTDOT_LE_QUOTED = "'..<'"
+    OPERATOR_LE_DOTDOT = "<.."
+    OPERATOR_LE_DOTDOT_QUOTED = "'<..'"
+    OPERATOR_LE_DOTDOT_LE = "<..<"
+    OPERATOR_LE_DOTDOT_LE_QUOTED = "'<..<'"
+    PERIOD = "." //TODO
+    OPERATOR_COLONCOLON = "::"
+    UNDERSCORE = "_"
+    KEYWORD_ANN = "ann"
+    KEYWORD_ANNOTATION = "annotation"
+    KEYWORD_ANY = "any"
+    KEYWORD_ARRAY = "array"
+    KEYWORD_BOOL = "bool"
+    KEYWORD_CASE = "case"
+    KEYWORD_CLASS = "class" // experimental
+    KEYWORD_CONSTRAINT = "constraint"
+    KEYWORD_DEFAULT = "default"
+    KEYWORD_EXTENDS = "extends" // experimental
+    KEYWORD_NEW = "new" // experimental
+    OPERATOR_IDIV = "div"
+    OPERATOR_IDIV_QUOTED = "'div'"
+    OPERATOR_DIFF = "diff"
+    OPERATOR_DIFF_QUOTED = "'diff'"
+    KEYWORD_ELSE = "else"
+    KEYWORD_ELSEIF = "elseif"
+    KEYWORD_ENDIF = "endif"
+    KEYWORD_ENUM = "enum"
+    KEYWORD_FLOAT = "float"
+    KEYWORD_FUNCTION = "function"
+    KEYWORD_IF = "if"
+    KEYWORD_INCLUDE = "include"
+    KEYWORD_INFINITY = "infinity"
+    OPERATOR_INTERSECT = "intersect"
+    OPERATOR_INTERSECT_QUOTED = "'intersect'"
+    OPERATOR_IN = "in"
+    OPERATOR_IN_QUOTED = "'in'"
+    KEYWORD_INT = "int"
+    KEYWORD_LET = "let"
+    KEYWORD_LIST = "list"
+    KEYWORD_MAXIMIZE = "maximize"
+    KEYWORD_MINIMIZE = "minimize"
+    OPERATOR_MOD = "mod"
+    OPERATOR_MOD_QUOTED = "'mod'"
+    OPERATOR_NOT = "not"
+    OPERATOR_NOT_QUOTED = "'not'"
+    KEYWORD_OF = "of"
+    KEYWORD_OUTPUT = "output"
+    KEYWORD_OPT = "opt"
+    KEYWORD_PAR = "par"
+    KEYWORD_PREDICATE = "predicate"
+    KEYWORD_RECORD = "record"
+    KEYWORD_SATISFY = "satisfy"
+    KEYWORD_SET = "set"
+    KEYWORD_SOLVE = "solve"
+    KEYWORD_STRING = "string"
+    OPERATOR_SUBSET = "subset"
+    OPERATOR_SUBSET_QUOTED = "'subset'"
+    OPERATOR_SUPERSET = "superset"
+    OPERATOR_SUPERSET_QUOTED = "'superset'"
+    OPERATOR_SYMDIFF = "symdiff"
+    OPERATOR_SYMDIFF_QUOTED = "'symdiff'"
+    KEYWORD_TEST = "test"
+    KEYWORD_THEN = "then"
+    KEYWORD_TUPLE = "tuple"
+    KEYWORD_TYPE = "type"
+    OPERATOR_UNION = "union"
+    OPERATOR_UNION_QUOTED = "'union'"
+    KEYWORD_VAR = "var"
+    KEYWORD_VARIANT_RECORD = "variant_record"
+    KEYWORD_WHERE = "where"
+    OPERATOR_XOR = "xor"
+    OPERATOR_XOR_QUOTED = "'xor'"
+    OPERATOR_PLUS = "+"
+    OPERATOR_PLUS_QUOTED = "'+'"
+    OPERATOR_MINUS = "-"
+    OPERATOR_MINUS_QUOTED = "'-'"
+    OPERATOR_MULT = "*"
+    OPERATOR_MULT_QUOTED = "'*'"
+    OPERATOR_DIV = "/"
+    OPERATOR_DIV_QUOTED = "'/'"
+    OPERATOR_POW_MINUS1 = "^-1"
+    OPERATOR_POW = "^"
+    OPERATOR_POW_QUOTED = "'^'"
+    OPERATOR_PLUSPLUS = "++"
+    OPERATOR_PLUSPLUS_QUOTED = "'++'"
+    KEYWORD_ABSENT = "<>"
+    OPERATOR_LE = "<"
+    OPERATOR_LE_QUOTED = "'<'"
+    OPERATOR_LQ = "<="
+    OPERATOR_LQ_QUOTED = "'<='"
+    OPERATOR_GR = ">"
+    OPERATOR_GR_QUOTED = "'>'"
+    OPERATOR_GQ = ">="
+    OPERATOR_GQ_QUOTED = "'>='"
+    OPERATOR_EQ = "=="
+    OPERATOR_EQ_QUOTED = "'=='"
+    // EQ = ==
+    OPERATOR_NQ = "!="
+    OPERATOR_NQ_QUOTED = "'!='"
+    OPERATOR_IMPL = "->"
+    OPERATOR_IMPL_QUOTED = "'->'"
+    OPERATOR_RIMPL = "<-"
+    OPERATOR_RIMPL_QUOTED = "'<-'"
+    OPERATOR_EQUIV = "<->"
+    OPERATOR_EQUIV_QUOTED = "'<->'"
+    OPERATOR_OR = "\\/"
+    OPERATOR_OR_QUOTED = "'\\/'"
+    OPERATOR_AND = "/\\"
+    OPERATOR_AND_QUOTED = "'/\\'"
+
+    OPERATOR_WEAK_PLUS = "~+"
+    OPERATOR_WEAK_MULT = "~*"
+    OPERATOR_WEAK_EQ = "~="
+    OPERATOR_WEAK_NQ = "~!="
+    OPERATOR_WEAK_MINUS = "~-"
+    OPERATOR_WEAK_DIV = "~/"
+    OPERATOR_WEAK_IDIV = "~div"
+
+    PARENTHESIS_LEFT = '('
+    PARENTHESIS_RIGHT = ')'
+    COMMA = ','
+    COLON = ':'
+    SEMICOLON = ';'
+    BRACE_LEFT = '{'
+    PIPE = '|'
+    BRACE_RIGHT = '}'
+    QUOTE = '"'
+    EQUALS = '='
+
+    // old
+    TOKEN_INTEGER = 'regexp:[0-9]+'
+    WHITE_SPACE = 'regexp:[\s\n]+'
+    TOKEN_IDENTIFIER = "regexp:[^\"'\s\.\-\[\]\^\/,;:(){}&|$.∞%<>⟷⇔>→⇒<←⇐∨⊻∧===!=≠<<=≤>>=≥∈⊆⊇~=~!=∪∖∩+++~+~*~*~]+"
+    STRING_LITERAL = "regexp:\"[^\"]*\"|'[^']*'"
+    TOKEN_148 = "regexp:'[^']*'"
+  ]
+
+  extends(".*_set_expression")=set_expression
+  extends(".*_expression")=expression
+  extends(".*literal.*")=expression
+  //extends(".*callable_expr")=callable_expression
+  consumeTokenMethod(".*_expression|expression")="consumeTokenFast"
+}
+
+model ::= statement+
+
+statement ::= !<<eof>> (include | declaration | assignment | constraint | goal | output | predicate | function | class_declaration | annotation) (';' | <<eof>>) { pin=1 recoverWhile = "semicolon_recover" extends = "com.bardiharborow.minizinc.language.psi.impl.MiniZincStatementElementImpl" }
+private semicolon_recover ::= !(';' | 'annotation' | identifier '=' | 'constraint' | type ':' | 'enum' | 'function' | 'solve' | 'include' | 'output' | 'predicate' | 'test' | 'type' | 'class')
+
+include ::= "include" STRING_LITERAL { pin=1 }
+
+declaration ::= type ':' identifier annotations? ("=" expression)? | "enum" identifier annotations? ("=" (enum_init | "[" string_lit_list "]"))? | "type" identifier annotations? "=" type { pin = 1 mixin="com.bardiharborow.minizinc.language.psi.impl.MiniZincDeclarationElementImpl" }
+
+private enum_init ::= (enum_construct "++")* enum_construct
+
+private enum_construct ::= '{' enum_id_list ','? '}' | identifier '(' expression ')' | "_" '(' expression ')'
+
+private string_lit_list ::= ((STRING_LITERAL ',')* STRING_LITERAL)?
+
+private enum_id_list ::= ((identifier ',')* identifier)?
+
+assignment ::= identifier "=" expression
+
+constraint ::= "constraint" expression annotations?
+
+goal ::= "solve" annotations? ("satisfy" | ("minimize" | "maximize") expression)
+
+output ::= "output" ("::" output_annotation)? expression
+
+output_annotation ::= string_expression | identifier '(' ')' | identifier '(' expr_list ')' | '(' expression ')'
+
+predicate ::= ("predicate" | "test") identifier "^-1"? parameters annotation_parameter annotations? operation_item_tail
+
+function ::= ("function" type ':' id_or_quoted_op | type ':' identifier) parameters annotation_parameter annotations? operation_item_tail
+
+// experimental
+class_declaration ::= "class" identifier class_extends_clause? class_parameters annotations? { pin = 1 mixin="com.bardiharborow.minizinc.language.psi.impl.MiniZincClassElementImpl" }
+class_extends_clause ::= "extends" identifier
+private class_parameters ::= '(' ((parameter | constraint) ';')* ((parameter | constraint) ';'?)? ')' { pin = 1 }
+
+annotation ::= "annotation" identifier parameters ("=" expression)?
+
+annotation_parameter ::= ("ann" ':' identifier)?
+
+operation_item_tail ::= ("=" expression)?
+
+parameters ::= ('(' ((parameter ',')* parameter ','?)? ')')? { pin=1 recoverWhile="parenthesis_recover" }
+private parenthesis_recover ::= !(')')
+
+parameter ::= type (':' identifier annotations?)? { pin = 1 extends = "com.bardiharborow.minizinc.language.psi.impl.MiniZincFieldElementImpl" }
+
+private type_and_identifier ::= type ':' identifier annotations?
+
+type_and_identifier_list ::= type_and_identifier_list_head ','?
+
+type_and_identifier_list_head ::= (type_and_identifier ',')* type_and_identifier
+
+type_list ::= (type ',')* type ','?
+
+type ::= (base_type | "array" "[" type_list "]" "of" base_type | "list" "of" base_type) ("++" base_type)?
+
+base_type ::= ("par" | "var")? ("opt")? ("set" "of")? base_type_tail | "any" type_inst_identifier | "any"
+
+// experimental
+base_type_tail ::= "int" | "bool" | "float" | "string" | "ann" | "tuple" '(' type_list ')' | "record" '(' type_and_identifier_list ')' | identifier | 'new' identifier | set_expression // type_inst_identifier | type_inst_enum_identifier
+
+array_access_expr_list ::= (array_access_expression ',')* array_access_expression ','?
+
+array_access_expression ::= expression | ".." | "..<" | "<.." | "<..<"
+
+expr_list ::= (expression ',')* expression ','?
+
+//  | set_expression "::" annotation_expression
+set_expression ::= atom_set_expression | infix_set_expression | postfix_set_expression | prefix_set_expression
+infix_set_expression ::= set_expression ("union" | "diff" | "symdiff" | ".." | "..<" | "<.." | "<..<" | "intersect" | "+" | "-" | "*" | "/" | "div" | "mod" | "^" | "~+" | "~-" | "~*" | "~/" | "~div" | "~=" | "~!=" | "default" | quoted_identifier) set_expression
+postfix_set_expression ::= set_expression (".." | "..<" | "<.." | "<..<")
+prefix_set_expression ::= (".." | "..<" | "<.." | "<..<" | "+" | "-") set_expression
+
+//| "'..<'" '(' set_expression ',' set_expression ')'
+//| "'<..'" '(' set_expression ',' set_expression ')'
+//| "'<..<'" '(' set_expression ',' set_expression ')'
+//| "'..'" '(' expression ',' expression ')'
+//| "'..<'" '(' set_expression ')'
+//| "'<..'" '(' set_expression ')'
+//| "'<..<'" '(' set_expression ')'
+//| "'..'" '(' expression ')'
+
+// | expression "::" annotation_expression |
+expression ::= atom_expression | infix_expression | postfix_expression | prefix_expression
+
+infix_expression ::= expression ("<->" | "->" | "<-" | "\\/" | "xor" | "/\\" | "<" | ">" | "<=" | ">=" | "=" | "!=" | "in" | "subset" | "superset" | "union" | "diff" | "symdiff" | ".." | "..<" | "<.." |  "<..<" | "intersect" | "++" | "+" | "-" | "*" | "/" | "div" | "mod" | "^" | "~+" | "~-" | "~*" | "~/" | "~div" | "~=" | "~!=" | "default" | quoted_identifier) expression
+postfix_expression ::= expression (".." | "..<" | "<.." |  "<..<")
+prefix_expression ::= (".." | "..<" | "<.." | "<..<" | "not" | "+" | "-") expression
+
+//| "'..<'" '(' expression ',' expression ')' 
+//| "'<..'" '(' expression ',' expression ')' 
+//| "'<..<'" '(' expression ',' expression ')' 
+//| "'..'" '(' expression ',' expression ')' 
+//| "'..<'" '(' expression ')' 
+//| "'<..'" '(' expression ')' 
+//| "'<..<'" '(' expression ')' 
+//| "'..'" '(' expression ')' 
+
+// reorged
+atom_expression ::= call_expression | (call_expression access_tail) | (identifier access_tail) | identifier | ('(' expression ')') | ('(' expression ')' access_tail) | ('(' expression ')' "^-1") | ('(' expression ')' access_tail "^-1") | (call_expression "^-1") | (call_expression access_tail "^-1")  | (identifier "^-1") | (identifier access_tail "^-1") | "_" | ("_" access_tail) | ("_" "^-1") | ("_" access_tail "^-1") | ("_" '(' expression ')') | bool_literal | (bool_literal "^-1") | integer_literal | (integer_literal "^-1") | "infinity" | ("infinity" "^-1") | float_literal | (float_literal "^-1") | "<>" | ("<>" "^-1") | set_literal | (set_literal access_tail) | (set_literal "^-1") | (set_literal access_tail "^-1") | set_comprehension | (set_comprehension access_tail) | (set_comprehension "^-1") | (set_comprehension access_tail "^-1") | simple_array_literal | (simple_array_literal access_tail) | simple_array_literal "^-1" | simple_array_literal access_tail "^-1" | simple_array_literal_2d | simple_array_literal_2d access_tail | simple_array_literal_2d "^-1" | simple_array_literal_2d access_tail "^-1" | simple_array_comprehension | simple_array_comprehension access_tail | simple_array_comprehension "^-1" | simple_array_comprehension access_tail "^-1" | if_then_else_expression | if_then_else_expression access_tail | if_then_else_expression "^-1" | if_then_else_expression access_tail "^-1" | let_expression | tuple_literal | tuple_literal access_tail | tuple_literal "^-1" | tuple_literal access_tail "^-1" | record_literal | record_literal access_tail | record_literal "^-1" | record_literal access_tail "^-1" | string_expression
+atom_set_expression ::= '(' expression ')' | '(' expression ')' access_tail | '(' expression ')' "^-1" | '(' expression ')' access_tail "^-1" | identifier | identifier access_tail | identifier "^-1" | identifier access_tail "^-1" | "_" | "_" access_tail | "_" "^-1" | "_" access_tail "^-1" | "_" '(' expression ')' | bool_literal | bool_literal "^-1" | integer_literal | integer_literal "^-1" | "infinity" | "infinity" "^-1" | float_literal | float_literal "^-1" | "<>" | "<>" "^-1" | set_literal | set_literal access_tail | set_literal "^-1" | set_literal access_tail "^-1" | set_comprehension | set_comprehension access_tail | set_comprehension "^-1" | set_comprehension access_tail "^-1" | simple_array_literal | simple_array_literal access_tail | simple_array_literal "^-1" | simple_array_literal access_tail "^-1" | simple_array_literal_2d | simple_array_literal_2d access_tail | simple_array_literal_2d "^-1" | simple_array_literal_2d access_tail "^-1" | simple_array_comprehension | simple_array_comprehension access_tail | simple_array_comprehension "^-1" | simple_array_comprehension access_tail "^-1" | if_then_else_expression | if_then_else_expression access_tail | if_then_else_expression "^-1" | if_then_else_expression access_tail "^-1" | let_expression | call_expression | call_expression access_tail | call_expression "^-1" | call_expression access_tail "^-1" | tuple_literal | tuple_literal access_tail | tuple_literal "^-1" | tuple_literal access_tail "^-1" | record_literal | record_literal access_tail | record_literal "^-1" | record_literal access_tail "^-1" | string_expression
+
+string_expression ::= STRING_LITERAL | interpolated_string_start string_quote_rest
+
+string_quote_rest ::= ((expression ',')* expression ','?) (interpolated_string_middle ((expression ',')* expression ','?))* interpolated_string_end
+
+access_tail ::= field_access
+//access_tail ::= (field_access | "[" array_access_expr_list "]")+
+
+set_literal ::= '{' expr_list? '}'
+
+tuple_literal ::= '(' expression ',' expr_list? ')'
+
+record_literal ::= '(' (record_field ',')* record_field ','? ')'
+
+record_field ::= identifier ':' expression
+
+set_comprehension ::= '{' expression '|' comp_tail '}'
+
+comp_tail ::= generator_list
+
+generator_list ::= (generator | generator_equation ("where" expression)? ',')* (generator | generator_equation ("where" expression)?) ','?
+
+generator ::= id_list "in" expression ("where" expression)?
+
+generator_equation ::= identifier "=" expression
+
+id_list ::= ((identifier | "_") ',')* (identifier | "_") ','?
+
+simple_array_literal ::= "[" comp_expr_list? "]"
+
+simple_array_literal_2d ::= "[|" (simple_array_literal_2d_indexed_list | simple_array_literal_3d_list) "|]"
+
+simple_array_literal_3d_list ::= '|' (simple_array_literal_2d_list)? '|' | simple_array_literal_3d_list ',' '|' simple_array_literal_2d_list '|'
+
+simple_array_literal_2d_list ::= expr_list ('|' expr_list)*
+
+simple_array_literal_2d_indexed_list ::= simple_array_literal_2d_indexed_list_head '|'?
+
+simple_array_literal_2d_indexed_list_head ::= simple_array_literal_2d_indexed_list_row (':' | '|' simple_array_literal_2d_indexed_list_row)?
+
+simple_array_literal_2d_indexed_list_row ::= simple_array_literal_2d_indexed_list_row_head ','?
+
+simple_array_literal_2d_indexed_list_row_head ::= ((':' | ',')? expression)+
+
+simple_array_comprehension ::= "[" expression (':' expression)? '|' comp_tail "]"
+
+comp_expr_list ::= comp_expr_list_head ','?
+
+comp_expr_list_head ::= (expression (':' expression)? ',')* expression (':' expression)? ','
+
+if_then_else_expression ::= "if" expression "then" expression (elseif_list "else" expression)? "endif"
+
+elseif_list ::= ("elseif" expression "then" expression)*
+
+quoted_op ::= "'<->'" | "'->'" | "'<-'" | "'\\/'" | "'xor'" | "'/\\'" | "'<'" | "'>'" | "'<='" | "'>='" | "'='" | "'!='" | "'in'" | "'subset'" | "'superset'" | "'union'" | "'diff'" | "'symdiff'" | "'+'" | "'-'" | "'*'" | "'^'" | "'/'" | "'div'" | "'mod'" | "'intersect'" | "'++'" | "'not'"
+
+quoted_op_call ::= quoted_op '(' expression (',' expression)? ')'
+
+call_expression ::= p_call_expression | quoted_op_call
+
+private p_call_expression ::= identifier "^-1"? '(' comp_or_expression? ')' ('(' expression ')')? { pin = 3 }
+
+comp_or_expression ::= (expression ("where" expression)? ',')* expression ("where" expression)? ','?
+
+let_expression ::= "let" '{' (let_declaration_list | let_declaration_list comma_or_semi)? '}' "in" expression
+
+let_declaration_list ::= ((let_declaration | constraint) comma_or_semi)* (let_declaration | constraint) comma_or_semi?
+
+comma_or_semi ::= ',' | ';'
+
+let_declaration ::= type_and_identifier ("=" expression)?
+
+annotations ::= ("::" annotation_expression)+
+
+annotation_expression ::= atom_expression | "output" | string_expression
+
+id_or_quoted_op ::= identifier ("^-1")? | "'<->'" | "'->'"| "'<-'" | "'\\/'" | "'xor'" | "'/\\'" | "'<'" | "'>'" | "'<='" | "'>='" | "'='" | "'!='" | "'in'" | "'subset'" | "'superset'" | "'union'" | "'diff'" | "'symdiff'" | "'..'" | "'<..'" | "'..<'" | "'<..<'" | "'+'" | "'-'" | "'*'" | "'^'" | "'/'" | "'div'" | "'mod'" | "'intersect'" | "'not'" | "'++'"
+
+identifier ::= TOKEN_IDENTIFIER { extends = "com.bardiharborow.minizinc.language.psi.impl.MiniZincReferenceElementImpl" implements = "com.bardiharborow.minizinc.language.psi.MiniZincReference" }
+
+integer_literal ::= TOKEN_INTEGER
+
+bool_literal ::= "true" | "false"
+
+field_access ::= "." (identifier | integer_literal) { pin = 1 rightAssociative = true }

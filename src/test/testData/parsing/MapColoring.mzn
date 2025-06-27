@@ -1,0 +1,1 @@
+../examples/MapColoring.mzn

@@ -1,0 +1,1 @@
+../examples/RectanglePacking.mzn

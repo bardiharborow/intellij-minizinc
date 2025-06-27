@@ -1,15 +1,53 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.bardiharborow.minizinc</id>
-    <name>minizinc</name>
+    <name>MiniZinc</name>
     <vendor>bardiharborow</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends optional="true" config-file="com.bardiharborow.minizinc-com.intellij.diagram.xml">com.intellij.diagram</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
+    <actions>
+        <action id="com.bardiharborow.minizinc.language.uml.actions.NewMiniZincClass" class="com.bardiharborow.minizinc.language.uml.actions.NewMiniZincClass" text="com.bardiharborow.minizinc.language.uml.actions.NewMiniZincClass" />
+        <action id="com.bardiharborow.minizinc.language.uml.actions.NewMiniZincField" class="com.bardiharborow.minizinc.language.uml.actions.NewMiniZincField" text="com.bardiharborow.minizinc.language.uml.actions.NewMiniZincField" />
+    </actions>
+
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.bardiharborow.minizinc.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.bardiharborow.minizinc.startup.MyProjectActivity" />
+        <!-- File types -->
+        <fileType name="MiniZinc" implementationClass="com.bardiharborow.minizinc.language.MiniZincFileType" fieldName="INSTANCE" language="MiniZinc" extensions="mzn" />
+        <fileType name="MiniZinc Data" implementationClass="com.bardiharborow.minizinc.language.MiniZincDataFileType" fieldName="INSTANCE" language="MiniZinc" extensions="dzn" />
+        <fileType name="MiniZinc Checker" implementationClass="com.bardiharborow.minizinc.language.MiniZincCheckerFileType" fieldName="INSTANCE" language="MiniZinc" extensions="mzc.mzn,mzc" />
+        <fileType name="FlatZinc" implementationClass="com.bardiharborow.minizinc.language.FlatZincFileType" fieldName="INSTANCE" language="FlatZinc" extensions="fzn" />
+
+        <!-- Run configurations -->
+        <configurationType implementation="com.bardiharborow.minizinc.runConfiguration.MiniZincConfigurationType" />
+        <runConfigurationProducer implementation="com.bardiharborow.minizinc.runConfiguration.MiniZincLazyRunConfigurationProducer" />
+
+        <!-- Language features -->
+        <lang.braceMatcher language="MiniZinc" implementationClass="com.bardiharborow.minizinc.language.editing.MiniZincBraceMatcher" />
+        <lang.commenter language="MiniZinc" implementationClass="com.bardiharborow.minizinc.language.editing.MiniZincCommenter" />
+        <lang.formatter language="MiniZinc" implementationClass="com.bardiharborow.minizinc.language.formatting.MiniZincFormattingModelBuilder" />
+        <lang.parserDefinition language="MiniZinc" implementationClass="com.bardiharborow.minizinc.language.MiniZincParserDefinition" />
+        <lang.psiStructureViewFactory language="MiniZinc" implementationClass="com.bardiharborow.minizinc.language.structure.MiniZincStructureViewFactory" />
+        <lang.quoteHandler language="MiniZinc" implementationClass="com.bardiharborow.minizinc.language.editing.MiniZincQuoteHandler" />
+        <lang.refactoringSupport language="MiniZinc" implementationClass="com.bardiharborow.minizinc.language.refactoring.MiniZincRefactoringSupportProvider" />
+        <lang.syntaxHighlighter language="MiniZinc" implementationClass="com.bardiharborow.minizinc.language.MiniZincSyntaxHighlighter" />
+
+        <!-- Code insight -->
+        <codeInsight.lineMarkerProvider language="MiniZinc" implementationClass="com.bardiharborow.minizinc.language.MiniZincLineMarkerProvider" />
+
+        <!-- Code style -->
+        <codeStyleSettingsProvider implementation="com.bardiharborow.minizinc.language.MiniZincCodeStyleSettingsProvider" />
+        <langCodeStyleSettingsProvider implementation="com.bardiharborow.minizinc.language.MiniZincLanguageCodeStyleSettingsProvider" />
+
+        <!-- Misc -->
+        <include.provider implementation="com.bardiharborow.minizinc.language.MiniZincIncludeProvider" />
+        <testSourcesFilter implementation="com.bardiharborow.minizinc.language.MiniZincTestSourcesFilter" />
+
+        <!-- Error handling -->
+        <errorHandler implementation="com.intellij.diagnostic.JetBrainsMarketplaceErrorReportSubmitter" />
     </extensions>
 </idea-plugin>
