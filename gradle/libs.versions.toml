@@ -8,7 +8,7 @@ changelog = "2.2.1"
 intelliJPlatform = "2.6.0"
 kotlin = "2.1.21"
 kover = "0.9.1"
-ktfmt = "0.22.0"
+ktfmt = "0.25.0"
 qodana = "2025.1.1"
 
 [libraries]
